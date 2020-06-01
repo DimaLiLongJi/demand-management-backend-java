@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demand.management.dao.mapper.DemandStatusMapper">
+    <resultMap id="demandStatusWithDetail" type="com.demand.management.dto.demand.RelationDemandStatus">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="isEndStatus" property="isEndStatus"/>
+        <result column="createDate" property="createDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+        <result column="creatorId" property="creatorId"/>
+        <association property="creator" javaType="com.demand.management.entity.User">
+            <id column="creator_id" property="id"/>
+            <result column="creator_name" property="name"/>
+            <result column="creator_mobile" property="mobile"/>
+            <result column="creator_email" property="email"/>
+            <result column="creator_roleId" property="roleId"/>
+            <result column="creator_creatorId" property="creatorId"/>
+            <result column="creator_createDate" property="createDate"/>
+            <result column="creator_updateDate" property="updateDate"/>
+            <result column="creator_deleteDate" property="deleteDate"/>
+        </association>
+    </resultMap>
+
+    <select id="findByPage" resultMap="demandStatusWithDetail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId
+        FROM demand_status ds
+        LEFT JOIN user u ON ds.creatorId = u.id
+        WHERE 1=1
+        <if test="isNull != null and isNull == 'isNull'">
+            AND ds.delete_date IS NULL
+        </if>
+        <if test="isNull != null and isNull == 'isNotNull'">
+            AND ds.delete_date IS NOT NULL
+        </if>
+        ORDER BY ds.id ASC
+    </select>
+
+    <select id="findById" resultMap="demandStatusWithDetail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId
+        FROM demand_status ds
+        LEFT JOIN user u ON ds.creatorId = u.id
+        WHERE ds.id = ${id}
+        ORDER BY ds.id ASC
+    </select>
+
+    <sql id="select">
+        SELECT
+        ds.id AS id,
+        ds.name AS name,
+        ds.isEndStatus AS isEndStatus,
+        ds.creatorId AS creatorId,
+        ds.create_date AS createDate,
+        ds.update_date AS updateDate,
+        ds.delete_date AS deleteDate
+    </sql>
+</mapper>

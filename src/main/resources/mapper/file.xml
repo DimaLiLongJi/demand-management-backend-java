@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demand.management.dao.mapper.FileMapper">
+    <resultMap id="detail" type="com.demand.management.dto.file.RelationFile">
+        <id column="f_id" property="id"/>
+        <result column="f_name" property="name"/>
+        <result column="f_creatorId" property="creatorId"/>
+        <result column="f_createDate" property="createDate"/>
+        <association property="creator" javaType="com.demand.management.entity.User">
+            <id column="creator_id" property="id"/>
+            <result column="creator_name" property="name"/>
+            <result column="creator_mobile" property="mobile"/>
+            <result column="creator_email" property="email"/>
+            <result column="creator_roleId" property="roleId"/>
+            <result column="creator_creatorId" property="creatorId"/>
+            <result column="creator_createDate" property="createDate"/>
+            <result column="creator_updateDate" property="updateDate"/>
+            <result column="creator_deleteDate" property="deleteDate"/>
+        </association>
+    </resultMap>
+
+    <select id="findByIds" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId
+        FROM file f
+        <include refid="joinSql"/>
+        WHERE f.id IN
+        <foreach collection="list" item="findId" index="index" open="(" close=")" separator=",">
+            #{findId}
+        </foreach>
+        ORDER BY f.id ASC
+    </select>
+
+    <select id="findById" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId
+        FROM file f
+        <include refid="joinSql"/>
+        WHERE f.id = ${id}
+        ORDER BY f.id ASC
+    </select>
+
+    <sql id="select">
+        SELECT
+        f.id As f_id,
+        f.name As f_name,
+        f.creatorId As f_creatorId,
+        f.create_date As f_createDate
+    </sql>
+
+    <sql id="joinSql">
+        LEFT JOIN user u ON f.creatorId = u.id
+    </sql>
+</mapper>

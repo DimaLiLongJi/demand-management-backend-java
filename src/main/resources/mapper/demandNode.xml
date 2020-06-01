@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demand.management.dao.mapper.DemandNodeMapper">
+    <resultMap id="detail" type="com.demand.management.dto.demand.RelationDemandNode">
+        <id column="id" property="id"/>
+        <result column="detail" property="detail"/>
+        <result column="demandProgressId" property="demandProgressId"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="createDate" property="createDate"/>
+        <result column="finishDate" property="finishDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+        <association property="creator" javaType="com.demand.management.entity.User">
+            <id column="creator_id" property="id"/>
+            <result column="creator_name" property="name"/>
+            <result column="creator_mobile" property="mobile"/>
+            <result column="creator_email" property="email"/>
+            <result column="creator_roleId" property="roleId"/>
+            <result column="creator_creatorId" property="creatorId"/>
+            <result column="creator_createDate" property="createDate"/>
+            <result column="creator_updateDate" property="updateDate"/>
+            <result column="creator_deleteDate" property="deleteDate"/>
+        </association>
+        <association property="demandProgress" javaType="com.demand.management.dto.demand.RelationDemandProgress">
+            <id column="demand_progress_id" property="id"/>
+            <result column="demand_progress_type" property="type"/>
+            <result column="demand_progress_demandId" property="demandId"/>
+            <result column="demand_progress_userId" property="userId"/>
+            <result column="demand_progress_creatorId" property="creatorId"/>
+            <result column="demand_progress_scheduleStartDate" property="scheduleStartDate"/>
+            <result column="demand_progress_scheduleEndDate" property="scheduleEndDate"/>
+            <result column="demand_progress_createDate" property="createDate"/>
+            <result column="demand_progress_updateDate" property="updateDate"/>
+            <result column="demand_progress_finishDate" property="finishDate"/>
+            <association property="demand" javaType="com.demand.management.entity.Demand">
+                <id column="d_id" property="id"/>
+                <result column="d_name" property="name"/>
+                <result column="d_detail" property="detail"/>
+                <result column="d_comment" property="comment"/>
+                <result column="d_url" property="url"/>
+                <result column="d_manDay" property="manDay"/>
+                <result column="d_demandTypeId" property="demandTypeId"/>
+                <result column="d_demandStatusId" property="demandStatusId"/>
+                <result column="d_creatorId" property="creatorId"/>
+                <result column="d_expectDate" property="expectDate"/>
+                <result column="d_scheduleStartDate" property="scheduleStartDate"/>
+                <result column="d_scheduleEndDate" property="scheduleEndDate"/>
+                <result column="d_scheduleEndDate" property="scheduleEndDate"/>
+                <result column="d_createDate" property="createDate"/>
+                <result column="d_updateDate" property="updateDate"/>
+                <result column="d_deleteDate" property="deleteDate"/>
+                <result column="d_finishDate" property="finishDate"/>
+            </association>
+            <association property="creator" javaType="com.demand.management.entity.User">
+                <id column="dp_creator_id" property="id"/>
+                <result column="dp_creator_name" property="name"/>
+                <result column="dp_creator_mobile" property="mobile"/>
+                <result column="dp_creator_email" property="email"/>
+                <result column="dp_creator_roleId" property="roleId"/>
+                <result column="dp_creator_creatorId" property="creatorId"/>
+                <result column="dp_creator_createDate" property="createDate"/>
+                <result column="dp_creator_updateDate" property="updateDate"/>
+                <result column="dp_creator_deleteDate" property="deleteDate"/>
+            </association>
+            <association property="user" javaType="com.demand.management.entity.User">
+                <id column="dp_user_id" property="id"/>
+                <result column="dp_user_name" property="name"/>
+                <result column="dp_user_mobile" property="mobile"/>
+                <result column="dp_user_email" property="email"/>
+                <result column="dp_user_roleId" property="roleId"/>
+                <result column="dp_user_creatorId" property="creatorId"/>
+                <result column="dp_user_createDate" property="createDate"/>
+                <result column="dp_user_updateDate" property="updateDate"/>
+                <result column="dp_user_deleteDate" property="deleteDate"/>
+            </association>
+        </association>
+    </resultMap>
+
+    <select id="findByPage" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId,
+        <include refid="joinDP"/>
+        FROM demand_node dn
+        LEFT JOIN user u ON dn.creatorId = u.id
+        <include refid="joinLeft"/>
+        WHERE 1 = 1
+        <if test="demandProgress != null">
+            AND dn.demandProgressId = ${demandProgress}
+        </if>
+        <if test="user != null">
+            AND dp.demandProgressId = ${user}
+        </if>
+        ORDER BY dn.id ASC
+    </select>
+
+    <select id="findById" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId,
+        <include refid="joinDP"/>
+        FROM demand_node dn
+        LEFT JOIN user u ON dn.creatorId = u.id
+        <include refid="joinLeft"/>
+        WHERE dn.id = ${id}
+        ORDER BY dn.id ASC
+    </select>
+
+    <sql id="select">
+        SELECT
+        dn.id AS id,
+        dn.detail AS detail,
+        dn.demandProgressId AS demandProgressId,
+        dn.creatorId AS creatorId,
+        dn.create_date AS createDate,
+        dn.finish_date AS finishDate,
+        dn.delete_date AS deleteDate
+    </sql>
+
+    <sql id="joinDP">
+        dp.id AS demand_progress_id,
+        dp.type AS demand_progress_type,
+        dp.demandId AS demand_progress_demandId,
+        dp.userId AS demand_progress_userId,
+        dp.creatorId AS demand_progress_creatorId,
+        dp.schedule_start_date AS demand_progress_scheduleStartDate,
+        dp.schedule_end_date AS demand_progress_scheduleEndDate,
+        dp.create_date AS demand_progress_createDate,
+        dp.finish_date AS demand_progress_finishDate,
+        dp.update_date AS demand_progress_updateDate,
+        u1.id AS dp_creator_id,
+        u1.name AS dp_creator_name,
+        u1.mobile AS dp_creator_mobile,
+        u1.email AS dp_creator_email,
+        u1.create_date AS dp_creator_createDate,
+        u1.update_date AS dp_creator_updateDate,
+        u1.delete_date AS dp_creator_deleteDate,
+        u2.roleId AS dp_creator_roleId,
+        u2.creatorId AS dp_creator_creatorId,
+        u2.id AS dp_user_id,
+        u2.name AS dp_user_name,
+        u2.mobile AS dp_user_mobile,
+        u2.email AS dp_user_email,
+        u2.create_date AS dp_user_createDate,
+        u2.update_date AS dp_user_updateDate,
+        u2.delete_date AS dp_user_deleteDate,
+        u2.roleId AS dp_user_roleId,
+        u2.creatorId AS dp_user_creatorId,
+        d.id As d_id,
+        d.name As d_name,
+        d.detail As d_detail,
+        d.comment As d_comment,
+        d.url As d_url,
+        d.manDay As d_manDay,
+        d.demandTypeId As d_demandTypeId,
+        d.demandStatusId As d_demandStatusId,
+        d.creatorId As d_creatorId,
+        d.expect_date As d_expectDate,
+        d.schedule_start_date As d_scheduleStartDate,
+        d.schedule_end_date As d_scheduleEndDate,
+        d.create_date As d_createDate,
+        d.delete_date As d_deleteDate,
+        d.update_date As d_updateDate,
+        d.finish_date As d_finishDate
+    </sql>
+
+    <sql id="joinLeft">
+        LEFT JOIN demand_progress dp on dp.id = dn.demandProgressId
+        LEFT JOIN demand d on dp.demandId = d.id
+        LEFT JOIN user u1 on dp.creatorId = u1.id
+        LEFT JOIN user u2 on dp.userId = u2.id
+    </sql>
+</mapper>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demand.management.dao.mapper.DemandLogMapper">
+    <resultMap id="detail" type="com.demand.management.dto.demand.RelationDemandLog">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="property" property="property" />
+        <result column="demandId" property="demandId"/>
+        <result column="oldDetail" property="oldDetail"/>
+        <result column="newDetail" property="newDetail"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="createDate" property="createDate"/>
+        <association property="creator" javaType="com.demand.management.entity.User">
+            <id column="creator_id" property="id"/>
+            <result column="creator_name" property="name"/>
+            <result column="creator_mobile" property="mobile"/>
+            <result column="creator_email" property="email"/>
+            <result column="creator_roleId" property="roleId"/>
+            <result column="creator_creatorId" property="creatorId"/>
+            <result column="creator_createDate" property="createDate"/>
+            <result column="creator_updateDate" property="updateDate"/>
+            <result column="creator_deleteDate" property="deleteDate"/>
+        </association>
+        <association property="demand" javaType="com.demand.management.entity.Demand">
+            <id column="d_id" property="id"/>
+            <result column="d_name" property="name"/>
+            <result column="d_detail" property="detail"/>
+            <result column="d_comment" property="comment"/>
+            <result column="d_url" property="url"/>
+            <result column="d_manDay" property="manDay"/>
+            <result column="d_demandTypeId" property="demandTypeId"/>
+            <result column="d_demandStatusId" property="demandStatusId"/>
+            <result column="d_creatorId" property="creatorId"/>
+            <result column="d_expectDate" property="expectDate"/>
+            <result column="d_scheduleStartDate" property="scheduleStartDate"/>
+            <result column="d_scheduleEndDate" property="scheduleEndDate"/>
+            <result column="d_scheduleEndDate" property="scheduleEndDate"/>
+            <result column="d_createDate" property="createDate"/>
+            <result column="d_updateDate" property="updateDate"/>
+            <result column="d_deleteDate" property="deleteDate"/>
+            <result column="d_finishDate" property="finishDate"/>
+        </association>
+    </resultMap>
+
+    <select id="findByPage" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId,
+        d.id As d_id,
+        d.name As d_name,
+        d.detail As d_detail,
+        d.comment As d_comment,
+        d.url As d_url,
+        d.manDay As d_manDay,
+        d.demandTypeId As d_demandTypeId,
+        d.demandStatusId As d_demandStatusId,
+        d.creatorId As d_creatorId,
+        d.expect_date As d_expectDate,
+        d.schedule_start_date As d_scheduleStartDate,
+        d.schedule_end_date As d_scheduleEndDate,
+        d.create_date As d_createDate,
+        d.delete_date As d_deleteDate,
+        d.update_date As d_updateDate,
+        d.finish_date As d_finishDate
+        FROM demand_log dl
+        LEFT JOIN user u ON dl.creatorId = u.id
+        LEFT JOIN demand d on dl.demandId = d.id
+        WHERE 1 = 1
+        <if test="demand != null">
+            AND dl.demandId = ${demand}
+        </if>
+        <if test="creator != null">
+            AND dl.creatorId = ${creator}
+        </if>
+        ORDER BY dl.id ASC
+    </select>
+
+    <select id="findById" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId,
+        d.id As d_id,
+        d.name As d_name,
+        d.detail As d_detail,
+        d.comment As d_comment,
+        d.url As d_url,
+        d.manDay As d_manDay,
+        d.demandTypeId As d_demandTypeId,
+        d.demandStatusId As d_demandStatusId,
+        d.creatorId As d_creatorId,
+        d.expect_date As d_expectDate,
+        d.schedule_start_date As d_scheduleStartDate,
+        d.schedule_end_date As d_scheduleEndDate,
+        d.create_date As d_createDate,
+        d.delete_date As d_deleteDate,
+        d.update_date As d_updateDate,
+        d.finish_date As d_finishDate
+        FROM demand_log dl
+        LEFT JOIN user u ON dl.creatorId = u.id
+        LEFT JOIN demand d on dl.demandId = d.id
+        WHERE dl.id = ${id}
+        ORDER BY dl.id ASC
+    </select>
+
+    <sql id="select">
+        SELECT
+        dl.id AS id,
+        dl.type AS type,
+        dl.property AS property,
+        dl.demandId AS demandId,
+        dl.oldDetail AS oldDetail,
+        dl.newDetail AS newDetail,
+        dl.creatorId AS creatorId,
+        dl.create_date AS createDate
+    </sql>
+</mapper>

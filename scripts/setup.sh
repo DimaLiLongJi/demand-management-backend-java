@@ -1,0 +1,1 @@
+nohup java -jar -Dspring.config.location=./application-prod.yml management-0.0.1.jar &

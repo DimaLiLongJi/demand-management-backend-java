@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demand.management.dao.mapper.ApproverMapper">
+    <resultMap id="detail" type="com.demand.management.dto.approver.RelationApprover">
+        <id column="id" property="id"/>
+        <result column="demandTypeId" property="demandTypeId"/>
+        <result column="demandStatusId" property="demandStatusId"/>
+        <result column="userId" property="userId"/>
+        <association property="user" javaType="com.demand.management.entity.User">
+            <id column="user_id" property="id"/>
+            <result column="user_name" property="name"/>
+            <result column="user_mobile" property="mobile"/>
+            <result column="user_email" property="email"/>
+            <result column="user_roleId" property="roleId"/>
+            <result column="user_creatorId" property="creatorId"/>
+            <result column="user_createDate" property="createDate"/>
+            <result column="user_updateDate" property="updateDate"/>
+            <result column="user_deleteDate" property="deleteDate"/>
+        </association>
+        <association property="demandType" javaType="com.demand.management.entity.DemandType">
+            <id column="demand_type_id" property="id"/>
+            <result column="demand_type_name" property="name"/>
+            <result column="demand_type_createDate" property="createDate"/>
+            <result column="demand_type_updateDate" property="updateDate"/>
+            <result column="demand_type_deleteDate" property="deleteDate"/>
+            <result column="demand_type_creatorId" property="creatorId"/>
+        </association>
+        <association property="demandStatus" javaType="com.demand.management.entity.DemandStatus">
+            <id column="demand_status_id" property="id"  />
+            <result column="demand_status_name"  property="name"/>
+            <result column="demand_status_creatorId"  property="creatorId"/>
+            <result column="demand_status_isEndStatus"  property="isEndStatus"/>
+            <result column="demand_status_createDate"  property="createDate"/>
+            <result column="demand_status_updateDate"  property="updateDate"/>
+            <result column="demand_status_deleteDate"  property="deleteDate"/>
+        </association>
+    </resultMap>
+
+    <select id="findByDemandByWhere" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS user_id,
+        u.name AS user_name,
+        u.mobile AS user_mobile,
+        u.email AS user_email,
+        u.create_date AS user_createDate,
+        u.update_date AS user_updateDate,
+        u.delete_date AS user_deleteDate,
+        u.roleId AS user_roleId,
+        u.creatorId AS user_creatorId,
+        dt.id AS demand_type_id,
+        dt.name AS demand_type_name,
+        dt.creatorId AS demand_type_creatorId,
+        dt.create_date AS demand_type_createDate,
+        dt.update_date AS demand_type_updateDate,
+        dt.delete_date AS demand_type_deleteDate,
+        ds.id AS demand_status_id,
+        ds.name AS demand_status_name,
+        ds.isEndStatus AS demand_status_isEndStatus,
+        ds.creatorId AS demand_status_creatorId,
+        ds.create_date AS demand_status_createDate,
+        ds.update_date AS demand_status_updateDate,
+        ds.delete_date AS demand_status_deleteDate
+        FROM approver a
+        <include refid="joinSql"/>
+        WHERE 1=1
+        <if test="demandTypeId != null">
+            AND a.demandTypeId = ${demandTypeId}
+        </if>
+        <if test="demandStatusId != null">
+            AND a.demandStatusId = ${demandStatusId}
+        </if>
+        <if test="userId != null">
+            AND a.userId = ${userId}
+        </if>
+        ORDER BY a.id ASC
+    </select>
+
+    <sql id="select">
+        SELECT
+        a.id As id,
+        a.demandTypeId As demandTypeId,
+        a.demandStatusId As demandStatusId,
+        a.userId As userId
+    </sql>
+
+    <sql id="joinSql">
+        LEFT JOIN user u ON a.userId = u.id
+        LEFT JOIN demand_type dt ON a.demandTypeId = dt.id
+        LEFT JOIN demand_status ds ON a.demandStatusId = ds.id
+    </sql>
+</mapper>

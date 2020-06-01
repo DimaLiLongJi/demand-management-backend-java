@@ -1,0 +1,57 @@
+server:
+  port: 4005
+  servlet:
+    context-path: /demand-manager
+
+# DataSource Config
+spring:
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: cm_hl_email@163.com
+    password: IXESLHSMVGPXVVAO
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          socketFactoryClass: javax.net.ssl.SSLSocketFactory
+          starttls:
+            enable: true
+            required: true
+        debug: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/demand?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: mossdbuser
+    password: yP@6M5s^#U
+    initial-size: 10
+    min-idle: 10
+    max-active: 100
+    max-wait: 60000
+    time-between-eviction-runs-millis: 60000
+    min-evictable-idle-time-millis: 300000
+  servlet:
+    ## MULTIPART (MultipartProperties)
+    multipart:
+      # 开启 multipart 上传功能
+      enabled: true
+      # 文件写入磁盘的阈值
+      file-size-threshold: 2KB
+      # 最大文件大小
+      max-file-size: 200MB
+      # 最大请求大小
+      max-request-size: 215MB
+file:
+  ## 文件存储所需参数
+  # 所有通过 REST APIs 上传的文件都将存储在此目录下
+  upload-dir: ./static
+
+#mybatis-plus配置控制台打印完整带参数SQL语句
+mybatis-plus:
+  # 支持统配符 * 或者 ; 分割
+  typeEnumsPackage: com.demand.management.dto*
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+self-config:
+  base-content-url: http://localhost:4007/hlj/global/demand-manager/pages/home/self-demand-list?demandId=

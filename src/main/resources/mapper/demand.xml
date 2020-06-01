@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demand.management.dao.mapper.DemandMapper">
+    <resultMap id="detail" type="com.demand.management.dto.demand.RelationDemand">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="isPending" property="isPending"/>
+        <result column="detail" property="detail"/>
+        <result column="comment" property="comment"/>
+        <result column="url" property="url"/>
+        <result column="manDay" property="manDay"/>
+        <result column="demandTypeId" property="demandTypeId"/>
+        <result column="demandStatusId" property="demandStatusId"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="expectDate" property="expectDate"/>
+        <result column="scheduleStartDate" property="scheduleStartDate"/>
+        <result column="scheduleEndDate" property="scheduleEndDate"/>
+        <result column="scheduleEndDate" property="scheduleEndDate"/>
+        <result column="createDate" property="createDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+        <result column="finishDate" property="finishDate"/>
+        <association property="creator" javaType="com.demand.management.entity.User">
+            <id column="creator_id" property="id"/>
+            <result column="creator_name" property="name"/>
+            <result column="creator_mobile" property="mobile"/>
+            <result column="creator_email" property="email"/>
+            <result column="creator_roleId" property="roleId"/>
+            <result column="creator_creatorId" property="creatorId"/>
+            <result column="creator_createDate" property="createDate"/>
+            <result column="creator_updateDate" property="updateDate"/>
+            <result column="creator_deleteDate" property="deleteDate"/>
+        </association>
+        <association property="demandType" javaType="com.demand.management.entity.DemandType">
+            <id column="demand_type_id" property="id"/>
+            <result column="demand_type_name" property="name"/>
+            <result column="demand_type_createDate" property="createDate"/>
+            <result column="demand_type_updateDate" property="updateDate"/>
+            <result column="demand_type_deleteDate" property="deleteDate"/>
+            <result column="demand_type_creatorId" property="creatorId"/>
+        </association>
+        <association property="demandStatus" javaType="com.demand.management.entity.DemandStatus">
+            <id column="demand_status_id" property="id"  />
+            <result column="demand_status_name"  property="name"/>
+            <result column="demand_status_creatorId"  property="creatorId"/>
+            <result column="demand_status_isEndStatus"  property="isEndStatus"/>
+            <result column="demand_status_createDate"  property="createDate"/>
+            <result column="demand_status_updateDate"  property="updateDate"/>
+            <result column="demand_status_deleteDate"  property="deleteDate"/>
+        </association>
+        <collection property="demandProgressList" ofType="com.demand.management.dto.demand.RelationDemandProgress">
+            <id column="demand_progress_id" property="id"/>
+            <result column="demand_progress_type" property="type"/>
+            <result column="demand_progress_demandId" property="demandId"/>
+            <result column="demand_progress_userId" property="userId"/>
+            <result column="demand_progress_creatorId" property="creatorId"/>
+            <result column="demand_progress_scheduleStartDate" property="scheduleStartDate"/>
+            <result column="demand_progress_scheduleEndDate" property="scheduleEndDate"/>
+            <result column="demand_progress_createDate" property="createDate"/>
+            <result column="demand_progress_updateDate" property="updateDate"/>
+            <result column="demand_progress_finishDate" property="finishDate"/>
+            <association property="user" javaType="com.demand.management.entity.User">
+                <id column="demand_progress_user_id" property="id"/>
+                <result column="demand_progress_user_name" property="name"/>
+                <result column="demand_progress_user_mobile" property="mobile"/>
+                <result column="demand_progress_user_email" property="email"/>
+                <result column="demand_progress_user_roleId" property="roleId"/>
+                <result column="demand_progress_user_creatorId" property="creatorId"/>
+                <result column="demand_progress_user_createDate" property="createDate"/>
+                <result column="demand_progress_user_updateDate" property="updateDate"/>
+                <result column="demand_progress_user_deleteDate" property="deleteDate"/>
+            </association>
+            <collection property="demandNodeList" ofType="com.demand.management.entity.DemandNode">
+                <id column="demand_progress_node_id" property="id"  />
+                <result column="demand_progress_node_detail"  property="detail"/>
+                <result column="demand_progress_node_demandProgressId"  property="demandProgressId"/>
+                <result column="demand_progress_node_creatorId"  property="creatorId"/>
+                <result column="demand_progress_node_createDate"  property="createDate"/>
+                <result column="demand_progress_node_deleteDate"  property="deleteDate"/>
+                <result column="demand_progress_node_finishDate"  property="finishDate"/>
+            </collection>
+        </collection>
+        <collection property="proposerList" ofType="com.demand.management.entity.User">
+            <id column="proposer_id" property="id"/>
+            <result column="proposer_name" property="name"/>
+            <result column="proposer_mobile" property="mobile"/>
+            <result column="proposer_email" property="email"/>
+            <result column="proposer_roleId" property="roleId"/>
+            <result column="proposer_creatorId" property="creatorId"/>
+            <result column="proposer_createDate" property="createDate"/>
+            <result column="proposer_updateDate" property="updateDate"/>
+            <result column="proposer_deleteDate" property="deleteDate"/>
+        </collection>
+        <collection property="brokerList" ofType="com.demand.management.entity.User">
+            <id column="broker_id" property="id"/>
+            <result column="broker_name" property="name"/>
+            <result column="broker_mobile" property="mobile"/>
+            <result column="broker_email" property="email"/>
+            <result column="broker_roleId" property="roleId"/>
+            <result column="broker_creatorId" property="creatorId"/>
+            <result column="broker_createDate" property="createDate"/>
+            <result column="broker_updateDate" property="updateDate"/>
+            <result column="broker_deleteDate" property="deleteDate"/>
+        </collection>
+        <collection property="developerList" ofType="com.demand.management.entity.User">
+            <id column="developer_id" property="id"/>
+            <result column="developer_name" property="name"/>
+            <result column="developer_mobile" property="mobile"/>
+            <result column="developer_email" property="email"/>
+            <result column="developer_roleId" property="roleId"/>
+            <result column="developer_creatorId" property="creatorId"/>
+            <result column="developer_createDate" property="createDate"/>
+            <result column="developer_updateDate" property="updateDate"/>
+            <result column="developer_deleteDate" property="deleteDate"/>
+        </collection>
+        <collection property="devopsList" ofType="com.demand.management.entity.User">
+            <id column="devops_id" property="id"/>
+            <result column="devops_name" property="name"/>
+            <result column="devops_mobile" property="mobile"/>
+            <result column="devops_email" property="email"/>
+            <result column="devops_roleId" property="roleId"/>
+            <result column="devops_creatorId" property="creatorId"/>
+            <result column="devops_createDate" property="createDate"/>
+            <result column="devops_updateDate" property="updateDate"/>
+            <result column="devops_deleteDate" property="deleteDate"/>
+        </collection>
+        <collection property="fileList" ofType="com.demand.management.entity.File">
+            <id column="f_id" property="id"/>
+            <result column="f_name" property="name"/>
+            <result column="f_creatorId" property="creatorId"/>
+            <result column="f_createDate" property="createDate"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="detailWithPage" type="com.demand.management.dto.demand.RelationDemand">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="isPending" property="isPending"/>
+        <result column="detail" property="detail"/>
+        <result column="comment" property="comment"/>
+        <result column="url" property="url"/>
+        <result column="manDay" property="manDay"/>
+        <result column="demandTypeId" property="demandTypeId"/>
+        <result column="demandStatusId" property="demandStatusId"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="expectDate" property="expectDate"/>
+        <result column="scheduleStartDate" property="scheduleStartDate"/>
+        <result column="scheduleEndDate" property="scheduleEndDate"/>
+        <result column="scheduleEndDate" property="scheduleEndDate"/>
+        <result column="createDate" property="createDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+        <result column="finishDate" property="finishDate"/>
+        <association property="creator" javaType="com.demand.management.entity.User">
+            <id column="creator_id" property="id"/>
+            <result column="creator_name" property="name"/>
+            <result column="creator_mobile" property="mobile"/>
+            <result column="creator_email" property="email"/>
+            <result column="creator_roleId" property="roleId"/>
+            <result column="creator_creatorId" property="creatorId"/>
+            <result column="creator_createDate" property="createDate"/>
+            <result column="creator_updateDate" property="updateDate"/>
+            <result column="creator_deleteDate" property="deleteDate"/>
+        </association>
+        <association property="demandType" javaType="com.demand.management.entity.DemandType">
+            <id column="demand_type_id" property="id"/>
+            <result column="demand_type_name" property="name"/>
+            <result column="demand_type_createDate" property="createDate"/>
+            <result column="demand_type_updateDate" property="updateDate"/>
+            <result column="demand_type_deleteDate" property="deleteDate"/>
+            <result column="demand_type_creatorId" property="creatorId"/>
+        </association>
+        <association property="demandStatus" javaType="com.demand.management.entity.DemandStatus">
+            <id column="demand_status_id" property="id"  />
+            <result column="demand_status_name"  property="name"/>
+            <result column="demand_status_creatorId"  property="creatorId"/>
+            <result column="demand_status_isEndStatus"  property="isEndStatus"/>
+            <result column="demand_status_createDate"  property="createDate"/>
+            <result column="demand_status_updateDate"  property="updateDate"/>
+            <result column="demand_status_deleteDate"  property="deleteDate"/>
+        </association>
+        <!-- TODO 一对多和多对多使用子查询，这是个坑 -->
+        <collection property="demandProgressList" ofType="com.demand.management.dto.demand.RelationDemandProgress" column="{demandId=id}" select="getDemandProgressList">
+        </collection>
+        <collection property="proposerList" ofType="com.demand.management.entity.User" column="{demandId=id,userId=proposer_id}" select="getProposerList">
+        </collection>
+        <collection property="brokerList" ofType="com.demand.management.entity.User" column="{demandId=id,userId=broker_id}" select="getBrokerList">
+        </collection>
+        <collection property="developerList" ofType="com.demand.management.entity.User" column="{demandId=id,userId=developer_id}" select="getDeveloperList">
+        </collection>
+        <collection property="devopsList" ofType="com.demand.management.entity.User" column="{demandId=id,userId=devops_id}" select="getDevopsList">
+        </collection>
+        <collection property="fileList" ofType="com.demand.management.entity.File" column="{demandId=id}" select="getFileList">
+        </collection>
+    </resultMap>
+
+    <resultMap id="demandUser" type="com.demand.management.entity.User">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="mobile" property="mobile"/>
+        <result column="email" property="email"/>
+        <result column="roleId" property="roleId"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="createDate" property="createDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+    </resultMap>
+
+    <resultMap id="demandProgress" type="com.demand.management.dto.demand.RelationDemandProgress">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="demandId" property="demandId"/>
+        <result column="userId" property="userId"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="scheduleStartDate" property="scheduleStartDate"/>
+        <result column="scheduleEndDate" property="scheduleEndDate"/>
+        <result column="createDate" property="createDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="finishDate" property="finishDate"/>
+        <association property="user" javaType="com.demand.management.entity.User">
+            <id column="user_id" property="id"/>
+            <result column="user_name" property="name"/>
+            <result column="user_mobile" property="mobile"/>
+            <result column="user_email" property="email"/>
+            <result column="user_roleId" property="roleId"/>
+            <result column="user_creatorId" property="creatorId"/>
+            <result column="user_createDate" property="createDate"/>
+            <result column="user_updateDate" property="updateDate"/>
+            <result column="user_deleteDate" property="deleteDate"/>
+        </association>
+        <collection property="demandNodeList" ofType="com.demand.management.entity.DemandNode">
+            <id column="demand_progress_node_id" property="id"  />
+            <result column="demand_progress_node_detail"  property="detail"/>
+            <result column="demand_progress_node_demandProgressId"  property="demandProgressId"/>
+            <result column="demand_progress_node_creatorId"  property="creatorId"/>
+            <result column="demand_progress_node_createDate"  property="createDate"/>
+            <result column="demand_progress_node_deleteDate"  property="deleteDate"/>
+            <result column="demand_progress_node_finishDate"  property="finishDate"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="demandFile" type="com.demand.management.entity.File">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="createDate" property="createDate"/>
+    </resultMap>
+
+    <select id="getDemandProgressList" resultMap="demandProgress">
+        SELECT
+        dp.id AS id,
+        dp.type AS type,
+        dp.demandId AS demandId,
+        dp.userId AS userId,
+        dp.creatorId AS creatorId,
+        dp.schedule_start_date AS scheduleStartDate,
+        dp.schedule_end_date AS scheduleEndDate,
+        dp.create_date AS createDate,
+        dp.finish_date AS finishDate,
+        dp.update_date AS updateDate,
+        u.id AS user_id,
+        u.name AS user_name,
+        u.mobile AS user_mobile,
+        u.email AS user_email,
+        u.create_date AS user_createDate,
+        u.update_date AS user_updateDate,
+        u.delete_date AS user_deleteDate,
+        u.roleId AS user_roleId,
+        u.creatorId AS user_creatorId,
+        dn.id as demand_progress_node_id,
+        dn.detail as demand_progress_node_detail,
+        dn.demandProgressId as demand_progress_node_demandProgressId,
+        dn.creatorId as demand_progress_node_creatorId,
+        dn.create_date as demand_progress_node_createDate,
+        dn.delete_date as demand_progress_node_deleteDate,
+        dn.finish_date as demand_progress_node_finishDate
+        FROM demand_progress dp
+        LEFT JOIN user u on dp.userId = u.id
+        LEFT JOIN demand_node dn ON dp.id = dn.demandProgressId
+        WHERE dp.demandId = ${demandId}
+    </select>
+
+    <select id="getProposerList" resultMap="demandUser">
+        SELECT
+        proposer.id AS id,
+        proposer.name AS name,
+        proposer.mobile AS mobile,
+        proposer.email AS email,
+        proposer.create_date AS createDate,
+        proposer.update_date AS updateDate,
+        proposer.delete_date AS deleteDate,
+        proposer.roleId AS roleId,
+        proposer.creatorId AS creatorId
+        FROM demand_proposer dproposer
+        <if test="userId == null">
+            LEFT JOIN user proposer on dproposer.user = proposer.id
+        </if>
+        <if test="userId != null">
+            INNER JOIN user proposer on dproposer.user = proposer.id
+            AND proposer.id = ${userId}
+        </if>
+        WHERE dproposer.demand = ${demandId}
+    </select>
+
+    <select id="getBrokerList" resultMap="demandUser">
+        SELECT
+        broker.id AS id,
+        broker.name AS name,
+        broker.mobile AS mobile,
+        broker.email AS email,
+        broker.create_date AS createDate,
+        broker.update_date AS updateDate,
+        broker.delete_date AS deleteDate,
+        broker.roleId AS roleId,
+        broker.creatorId AS creatorId
+        FROM demand_broker dbroker
+        <if test="userId == null">
+            LEFT JOIN user broker on dbroker.user = broker.id
+        </if>
+        <if test="userId != null">
+            INNER JOIN user broker on dbroker.user = broker.id
+            AND broker.id = ${userId}
+        </if>
+        WHERE dbroker.demand = ${demandId}
+    </select>
+
+    <select id="getDeveloperList" resultMap="demandUser">
+        SELECT
+        developer.id AS id,
+        developer.name AS name,
+        developer.mobile AS mobile,
+        developer.email AS email,
+        developer.create_date AS createDate,
+        developer.update_date AS updateDate,
+        developer.delete_date AS deleteDate,
+        developer.roleId AS roleId,
+        developer.creatorId AS creatorId
+        FROM demand_developer ddeveloper
+        <if test="userId == null">
+            LEFT JOIN user developer on ddeveloper.user = developer.id
+        </if>
+        <if test="userId != null">
+            INNER JOIN user developer on ddeveloper.user = developer.id
+            AND developer.id = ${userId}
+        </if>
+        WHERE ddeveloper.demand = ${demandId}
+    </select>
+
+    <select id="getDevopsList" resultMap="demandUser">
+        SELECT
+        devops.id AS id,
+        devops.name AS name,
+        devops.mobile AS mobile,
+        devops.email AS email,
+        devops.create_date AS createDate,
+        devops.update_date AS updateDate,
+        devops.delete_date AS deleteDate,
+        devops.roleId AS roleId,
+        devops.creatorId AS creatorId
+        FROM demand_devops ddevops
+        <if test="userId == null">
+            LEFT JOIN user devops on ddevops.user = devops.id
+        </if>
+        <if test="userId != null">
+            INNER JOIN user devops on ddevops.user = devops.id
+            AND devops.id = ${userId}
+        </if>
+        WHERE ddevops.demand = ${demandId}
+    </select>
+
+    <select id="getFileList" resultMap="demandFile">
+        SELECT
+        f.id As id,
+        f.name As name,
+        f.creatorId As creatorId,
+        f.create_date As createDate
+        FROM demand_files df
+        LEFT JOIN file f ON f.id = df.file
+        WHERE df.demand = ${demandId}
+    </select>
+
+    <select id="findByPage" resultMap="detailWithPage">
+        <include refid="select"/>
+        ,
+        <if test="proposer != null">
+            ${proposer} AS proposer_id,
+        </if>
+        <if test="proposer == null">
+            null AS proposer_id,
+        </if>
+        <if test="broker != null">
+            ${broker} AS broker_id,
+        </if>
+        <if test="broker == null">
+            null AS broker_id,
+        </if>
+        <if test="developer != null">
+            ${developer} AS developer_id,
+        </if>
+        <if test="developer == null">
+            null AS developer_id,
+        </if>
+        <if test="devops != null">
+            ${devops} AS devops_id,
+        </if>
+        <if test="devops == null">
+            null AS devops_id,
+        </if>
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId,
+        dt.id AS demand_type_id,
+        dt.name AS demand_type_name,
+        dt.creatorId AS demand_type_creatorId,
+        dt.create_date AS demand_type_createDate,
+        dt.update_date AS demand_type_updateDate,
+        dt.delete_date AS demand_type_deleteDate,
+        ds.id AS demand_status_id,
+        ds.name AS demand_status_name,
+        ds.isEndStatus AS demand_status_isEndStatus,
+        ds.creatorId AS demand_status_creatorId,
+        ds.create_date AS demand_status_createDate,
+        ds.update_date AS demand_status_updateDate,
+        ds.delete_date AS demand_status_deleteDate
+        FROM demand d
+        LEFT JOIN user u ON d.creatorId = u.id
+        LEFT JOIN demand_type dt ON d.demandTypeId = dt.id
+        LEFT JOIN demand_status ds ON d.demandStatusId = ds.id
+        <if test="proposer != null">
+            INNER JOIN demand_proposer dproposer ON d.id = dproposer.demand
+            AND dproposer.user = ${proposer}
+        </if>
+        <if test="broker != null">
+            INNER JOIN demand_broker dbroker ON d.id = dbroker.demand
+            AND dbroker.user = ${broker}
+        </if>
+        <if test="developer != null">
+            INNER JOIN demand_developer ddeveloper ON d.id = ddeveloper.demand
+            AND ddeveloper.user = ${developer}
+        </if>
+        <if test="devops != null">
+            INNER JOIN demand_devops ddevops ON d.id = ddevops.demand
+            AND ddevops.user = ${devops}
+        </if>
+        <if test="approver != null">
+            INNER JOIN approver a ON a.demandTypeId = d.demandTypeId
+            AND a.demandStatusId = d.demandStatusId
+            AND a.userId = ${approver}
+        </if>
+        WHERE 1 = 1
+        <if test="approver != null">
+            AND d.isPending = 2
+        </if>
+        <if test="isNull != null and isNull == 'isNull'">
+            AND d.delete_date IS NULL
+        </if>
+        <if test="isNull != null and isNull == 'isNotNull'">
+            AND d.delete_date IS NOT NULL
+        </if>
+        <if test="keyword != null">
+            AND d.detail like "%${keyword}%"
+            OR d.name like "%${keyword}%"
+        </if>
+        <if test="creator != null">
+            AND d.creatorId = ${creator}
+        </if>
+        <if test="demandType != null">
+            AND d.demandTypeId = ${demandType}
+        </if>
+        <if test="demandStatus != null">
+            AND d.demandStatusId = ${demandStatus}
+        </if>
+        <if test="timeout != null and timeout == 1">
+            AND TO_DAYS(d.schedule_end_date) &gt; TO_DAYS(NOW())
+        </if>
+        <if test="timeout != null and timeout == 2">
+            AND TO_DAYS(d.schedule_end_date) = TO_DAYS(NOW())
+        </if>
+        <if test="timeout != null and timeout == 3">
+            AND TO_DAYS(d.schedule_end_date) &lt; TO_DAYS(NOW())
+        </if>
+        <if test="timeout != null and timeout == 4">
+            AND d.finish_date IS NOT NULL
+        </if>
+        <if test="demandCreateFromDate != null">
+            AND TO_DAYS(d.create_date) &gt;= TO_DAYS(TIME("${demandCreateFromDate}"))
+        </if>
+        <if test="demandCreateToDate != null">
+            AND TO_DAYS(d.create_date) &lt;= TO_DAYS(TIME("${demandCreateToDate}"))
+        </if>
+        <if test="demandEndFromDate != null">
+            AND TO_DAYS(d.finish_date) &gt;= TO_DAYS(TIME("${demandEndFromDate}"))
+        </if>
+        <if test="demandEndToDate != null">
+            AND TO_DAYS(d.finish_date) &lt;= TO_DAYS(TIME("${demandEndToDate}"))
+        </if>
+        <if test="scheduleStartFromDate != null">
+            AND TO_DAYS(d.schedule_start_date) &gt;= TO_DAYS(TIME("${scheduleStartFromDate}"))
+        </if>
+        <if test="scheduleStartToDate != null">
+            AND TO_DAYS(d.schedule_start_date) &lt;= TO_DAYS(TIME("${scheduleStartToDate}"))
+        </if>
+        <if test="scheduleEndFromDate != null">
+            AND TO_DAYS(d.schedule_end_date) &gt;= TO_DAYS(TIME("${scheduleEndFromDate}"))
+        </if>
+        <if test="scheduleEndToDate != null">
+            AND TO_DAYS(d.schedule_end_date) &lt;= TO_DAYS(TIME("${scheduleEndToDate}"))
+        </if>
+        ORDER BY d.id ASC
+    </select>
+
+    <select id="findByIds" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId,
+        dt.id AS demand_type_id,
+        dt.name AS demand_type_name,
+        dt.creatorId AS demand_type_creatorId,
+        dt.create_date AS demand_type_createDate,
+        dt.update_date AS demand_type_updateDate,
+        dt.delete_date AS demand_type_deleteDate,
+        ds.id AS demand_status_id,
+        ds.name AS demand_status_name,
+        ds.isEndStatus AS demand_status_isEndStatus,
+        ds.creatorId AS demand_status_creatorId,
+        ds.create_date AS demand_status_createDate,
+        ds.update_date AS demand_status_updateDate,
+        ds.delete_date AS demand_status_deleteDate,
+        dp.id AS demand_progress_id,
+        dp.type AS demand_progress_type,
+        dp.demandId AS demand_progress_demandId,
+        dp.userId AS demand_progress_userId,
+        dp.creatorId AS demand_progress_creatorId,
+        dp.schedule_start_date AS demand_progress_scheduleStartDate,
+        dp.schedule_end_date AS demand_progress_scheduleEndDate,
+        dp.create_date AS demand_progress_createDate,
+        dp.finish_date AS demand_progress_finishDate,
+        dp.update_date AS demand_progress_updateDate,
+        dpu.id AS demand_progress_user_id,
+        dpu.name AS demand_progress_user_name,
+        dpu.mobile AS demand_progress_user_mobile,
+        dpu.email AS demand_progress_user_email,
+        dpu.create_date AS demand_progress_user_createDate,
+        dpu.update_date AS demand_progress_user_updateDate,
+        dpu.delete_date AS demand_progress_user_deleteDate,
+        dpu.roleId AS demand_progress_user_roleId,
+        dpu.creatorId AS demand_progress_user_creatorId,
+        dn.id as demand_progress_node_id,
+        dn.detail as demand_progress_node_detail,
+        dn.demandProgressId as demand_progress_node_demandProgressId,
+        dn.creatorId as demand_progress_node_creatorId,
+        dn.create_date as demand_progress_node_createDate,
+        dn.delete_date as demand_progress_node_deleteDate,
+        dn.finish_date as demand_progress_node_finishDate,
+        proposer.id AS proposer_id,
+        proposer.name AS proposer_name,
+        proposer.mobile AS proposer_mobile,
+        proposer.email AS proposer_email,
+        proposer.create_date AS proposer_createDate,
+        proposer.update_date AS proposer_updateDate,
+        proposer.delete_date AS proposer_deleteDate,
+        proposer.roleId AS proposer_roleId,
+        proposer.creatorId AS proposer_creatorId,
+        broker.id AS broker_id,
+        broker.name AS broker_name,
+        broker.mobile AS broker_mobile,
+        broker.email AS broker_email,
+        broker.create_date AS broker_createDate,
+        broker.update_date AS broker_updateDate,
+        broker.delete_date AS broker_deleteDate,
+        broker.roleId AS broker_roleId,
+        broker.creatorId AS broker_creatorId,
+        developer.id AS developer_id,
+        developer.name AS developer_name,
+        developer.mobile AS developer_mobile,
+        developer.email AS developer_email,
+        developer.create_date AS developer_createDate,
+        developer.update_date AS developer_updateDate,
+        developer.delete_date AS developer_deleteDate,
+        developer.roleId AS developer_roleId,
+        developer.creatorId AS developer_creatorId,
+        devops.id AS devops_id,
+        devops.name AS devops_name,
+        devops.mobile AS devops_mobile,
+        devops.email AS devops_email,
+        devops.create_date AS devops_createDate,
+        devops.update_date AS devops_updateDate,
+        devops.delete_date AS devops_deleteDate,
+        devops.roleId AS devops_roleId,
+        devops.creatorId AS devops_creatorId,
+        f.id As f_id,
+        f.name As f_name,
+        f.creatorId As f_creatorId,
+        f.create_date As f_createDate
+        FROM demand d
+        <include refid="joinSql"/>
+        WHERE id IN
+        <foreach collection="list" item="findId" index="index" open="(" close=")" separator=",">
+            #{findId}
+        </foreach>
+        ORDER BY d.id ASC
+    </select>
+
+    <select id="findById" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u.id AS creator_id,
+        u.name AS creator_name,
+        u.mobile AS creator_mobile,
+        u.email AS creator_email,
+        u.create_date AS creator_createDate,
+        u.update_date AS creator_updateDate,
+        u.delete_date AS creator_deleteDate,
+        u.roleId AS creator_roleId,
+        u.creatorId AS creator_creatorId,
+        dt.id AS demand_type_id,
+        dt.name AS demand_type_name,
+        dt.creatorId AS demand_type_creatorId,
+        dt.create_date AS demand_type_createDate,
+        dt.update_date AS demand_type_updateDate,
+        dt.delete_date AS demand_type_deleteDate,
+        ds.id AS demand_status_id,
+        ds.name AS demand_status_name,
+        ds.isEndStatus AS demand_status_isEndStatus,
+        ds.creatorId AS demand_status_creatorId,
+        ds.create_date AS demand_status_createDate,
+        ds.update_date AS demand_status_updateDate,
+        ds.delete_date AS demand_status_deleteDate,
+        dp.id AS demand_progress_id,
+        dp.type AS demand_progress_type,
+        dp.demandId AS demand_progress_demandId,
+        dp.userId AS demand_progress_userId,
+        dp.creatorId AS demand_progress_creatorId,
+        dp.schedule_start_date AS demand_progress_scheduleStartDate,
+        dp.schedule_end_date AS demand_progress_scheduleEndDate,
+        dp.create_date AS demand_progress_createDate,
+        dp.finish_date AS demand_progress_finishDate,
+        dp.update_date AS demand_progress_updateDate,
+        dpu.id AS demand_progress_user_id,
+        dpu.name AS demand_progress_user_name,
+        dpu.mobile AS demand_progress_user_mobile,
+        dpu.email AS demand_progress_user_email,
+        dpu.create_date AS demand_progress_user_createDate,
+        dpu.update_date AS demand_progress_user_updateDate,
+        dpu.delete_date AS demand_progress_user_deleteDate,
+        dpu.roleId AS demand_progress_user_roleId,
+        dpu.creatorId AS demand_progress_user_creatorId,
+        dn.id as demand_progress_node_id,
+        dn.detail as demand_progress_node_detail,
+        dn.demandProgressId as demand_progress_node_demandProgressId,
+        dn.creatorId as demand_progress_node_creatorId,
+        dn.create_date as demand_progress_node_createDate,
+        dn.delete_date as demand_progress_node_deleteDate,
+        dn.finish_date as demand_progress_node_finishDate,
+        proposer.id AS proposer_id,
+        proposer.name AS proposer_name,
+        proposer.mobile AS proposer_mobile,
+        proposer.email AS proposer_email,
+        proposer.create_date AS proposer_createDate,
+        proposer.update_date AS proposer_updateDate,
+        proposer.delete_date AS proposer_deleteDate,
+        proposer.roleId AS proposer_roleId,
+        proposer.creatorId AS proposer_creatorId,
+        broker.id AS broker_id,
+        broker.name AS broker_name,
+        broker.mobile AS broker_mobile,
+        broker.email AS broker_email,
+        broker.create_date AS broker_createDate,
+        broker.update_date AS broker_updateDate,
+        broker.delete_date AS broker_deleteDate,
+        broker.roleId AS broker_roleId,
+        broker.creatorId AS broker_creatorId,
+        developer.id AS developer_id,
+        developer.name AS developer_name,
+        developer.mobile AS developer_mobile,
+        developer.email AS developer_email,
+        developer.create_date AS developer_createDate,
+        developer.update_date AS developer_updateDate,
+        developer.delete_date AS developer_deleteDate,
+        developer.roleId AS developer_roleId,
+        developer.creatorId AS developer_creatorId,
+        devops.id AS devops_id,
+        devops.name AS devops_name,
+        devops.mobile AS devops_mobile,
+        devops.email AS devops_email,
+        devops.create_date AS devops_createDate,
+        devops.update_date AS devops_updateDate,
+        devops.delete_date AS devops_deleteDate,
+        devops.roleId AS devops_roleId,
+        devops.creatorId AS devops_creatorId,
+        f.id As f_id,
+        f.name As f_name,
+        f.creatorId As f_creatorId,
+        f.create_date As f_createDate
+        FROM demand d
+        <include refid="joinSql"/>
+        WHERE d.id = ${id}
+        ORDER BY d.id ASC
+    </select>
+
+    <sql id="select">
+        SELECT
+        d.id As id,
+        d.name As name,
+        d.isPending As isPending,
+        d.detail As detail,
+        d.comment As comment,
+        d.url As url,
+        d.manDay As manDay,
+        d.demandTypeId As demandTypeId,
+        d.demandStatusId As demandStatusId,
+        d.creatorId As creatorId,
+        d.expect_date As expectDate,
+        d.schedule_start_date As scheduleStartDate,
+        d.schedule_end_date As scheduleEndDate,
+        d.create_date As createDate,
+        d.delete_date As deleteDate,
+        d.update_date As updateDate,
+        d.finish_date As finishDate
+    </sql>
+
+    <sql id="joinSql">
+        LEFT JOIN user u ON d.creatorId = u.id
+        LEFT JOIN demand_type dt ON d.demandTypeId = dt.id
+        LEFT JOIN demand_status ds ON d.demandStatusId = ds.id
+        LEFT JOIN demand_progress dp ON d.id = dp.demandId
+        LEFT JOIN user dpu ON dpu.id = dp.userId
+        LEFT JOIN demand_node dn ON dp.id = dn.demandProgressId
+        LEFT JOIN demand_proposer dproposer ON d.id = dproposer.demand
+        LEFT JOIN user proposer on dproposer.user = proposer.id
+        LEFT JOIN demand_broker dbroker ON d.id = dbroker.demand
+        LEFT JOIN user broker on dbroker.user = broker.id
+        LEFT JOIN demand_developer ddeveloper ON d.id = ddeveloper.demand
+        LEFT JOIN user developer on ddeveloper.user = developer.id
+        LEFT JOIN demand_devops ddevops ON d.id = ddevops.demand
+        LEFT JOIN user devops on ddevops.user = devops.id
+        LEFT JOIN demand_files df ON d.id = df.demand
+        LEFT JOIN file f on df.file = f.id
+    </sql>
+</mapper>

@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demand.management.dao.mapper.UserMapper">
+    <resultMap id="detail" type="com.demand.management.dto.user.RelationUser">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="mobile" property="mobile"/>
+        <result column="email" property="email"/>
+        <result column="roleId" property="roleId"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="createDate" property="createDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+        <association property="creator" javaType="com.demand.management.entity.User">
+            <id column="creator_id" property="id"/>
+            <result column="creator_name" property="name"/>
+            <result column="creator_mobile" property="mobile"/>
+            <result column="creator_email" property="email"/>
+            <result column="creator_roleId" property="roleId"/>
+            <result column="creator_creatorId" property="creatorId"/>
+            <result column="creator_createDate" property="createDate"/>
+            <result column="creator_updateDate" property="updateDate"/>
+            <result column="creator_deleteDate" property="deleteDate"/>
+        </association>
+        <association property="role" javaType="com.demand.management.dto.role.RelationRole">
+            <id column="role_id" property="id"/>
+            <result column="role_name" property="name"/>
+            <result column="role_createDate" property="createDate"/>
+            <result column="role_updateDate" property="updateDate"/>
+            <result column="role_deleteDate" property="deleteDate"/>
+            <result column="role_creatorId" property="creatorId"/>
+            <collection property="permissionList" ofType="com.demand.management.dto.permission.RelationPermission">
+                <id column="role_permission_id" property="id"  />
+                <result column="role_permission_name"  property="name"/>
+                <result column="role_permission_type"  property="type"/>
+                <result column="role_permission_route"  property="route"/>
+                <result column="role_permission_moduleId"  property="moduleId"/>
+                <result column="role_permission_operating"  property="operating"/>
+                <result column="role_permission_createDate"  property="createDate"/>
+                <result column="role_permission_updateDate"  property="updateDate"/>
+                <result column="role_permission_deleteDate"  property="deleteDate"/>
+                <association property="module" javaType="com.demand.management.entity.Module">
+                    <id column="m_id" property="id"/>
+                    <result column="m_name" property="name"/>
+                    <result column="m_icon" property="icon"/>
+                    <result column="m_createDate" property="createDate"/>
+                    <result column="m_updateDate" property="updateDate"/>
+                    <result column="m_deleteDate" property="deleteDate"/>
+                    <result column="m_deleteDate" property="creatorId"/>
+                </association>
+            </collection>
+        </association>
+        <collection property="permissionList" ofType="com.demand.management.dto.permission.RelationPermission">
+            <id column="permission_id" property="id"  />
+            <result column="permission_name"  property="name"/>
+            <result column="permission_type"  property="type"/>
+            <result column="permission_route"  property="route"/>
+            <result column="permission_moduleId"  property="moduleId"/>
+            <result column="permission_operating"  property="operating"/>
+            <result column="permission_createDate"  property="createDate"/>
+            <result column="permission_updateDate"  property="updateDate"/>
+            <result column="permission_deleteDate"  property="deleteDate"/>
+            <association property="module" javaType="com.demand.management.entity.Module">
+                <id column="m2_id" property="id"/>
+                <result column="m2_name" property="name"/>
+                <result column="m2_icon" property="icon"/>
+                <result column="m2_createDate" property="createDate"/>
+                <result column="m2_updateDate" property="updateDate"/>
+                <result column="m_deleteDate" property="deleteDate"/>
+                <result column="m_deleteDate" property="creatorId"/>
+            </association>
+        </collection>
+    </resultMap>
+
+    <resultMap id="detailWithPage" type="com.demand.management.dto.user.RelationUser">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="mobile" property="mobile"/>
+        <result column="email" property="email"/>
+        <result column="roleId" property="roleId"/>
+        <result column="creatorId" property="creatorId"/>
+        <result column="password" property="password"/>
+        <result column="salt" property="salt"/>
+        <result column="createDate" property="createDate"/>
+        <result column="updateDate" property="updateDate"/>
+        <result column="deleteDate" property="deleteDate"/>
+        <association property="creator" javaType="com.demand.management.entity.User">
+            <id column="creator_id" property="id"/>
+            <result column="creator_name" property="name"/>
+            <result column="creator_mobile" property="mobile"/>
+            <result column="creator_email" property="email"/>
+            <result column="creator_roleId" property="roleId"/>
+            <result column="creator_creatorId" property="creatorId"/>
+            <result column="creator_createDate" property="createDate"/>
+            <result column="creator_updateDate" property="updateDate"/>
+            <result column="creator_deleteDate" property="deleteDate"/>
+        </association>
+        <association property="role" javaType="com.demand.management.dto.role.RelationRole">
+            <id column="role_id" property="id"/>
+            <result column="role_name" property="name"/>
+            <result column="role_createDate" property="createDate"/>
+            <result column="role_updateDate" property="updateDate"/>
+            <result column="role_deleteDate" property="deleteDate"/>
+            <result column="role_creatorId" property="creatorId"/>
+            <collection property="permissionList" ofType="com.demand.management.dto.permission.RelationPermission" column="{roleId=roleId}" select="getPermissionListByRole">
+            </collection>
+        </association>
+        <collection property="permissionList" ofType="com.demand.management.dto.permission.RelationPermission" column="{userId=id}" select="getPermissionList">
+        </collection>
+    </resultMap>
+
+    <resultMap id="permission" type="com.demand.management.dto.permission.RelationPermission">
+        <id column="id" property="id"  />
+        <result column="name"  property="name"/>
+        <result column="type"  property="type"/>
+        <result column="moduleId"  property="moduleId"/>
+        <result column="route"  property="route"/>
+        <result column="operating"  property="operating"/>
+        <result column="createDate"  property="createDate"/>
+        <result column="updateDate"  property="updateDate"/>
+        <result column="deleteDate"  property="deleteDate"/>
+        <association property="module" javaType="com.demand.management.entity.Module">
+            <id column="m_id" property="id"/>
+            <result column="m_name" property="name"/>
+            <result column="m_icon" property="icon"/>
+            <result column="m_createDate" property="createDate"/>
+            <result column="m_updateDate" property="updateDate"/>
+            <result column="m_deleteDate" property="deleteDate"/>
+            <result column="m_deleteDate" property="creatorId"/>
+        </association>
+    </resultMap>
+
+    <select id="getPermissionListByRole" resultMap="permission">
+        SELECT
+        p.id as id,
+        p.name as name,
+        p.type as type,
+        p.route as route,
+        p.moduleId as moduleId,
+        p.operating as operating,
+        p.create_date as createDate,
+        p.update_date as updateDate,
+        p.delete_date as deleteDate,
+        m.id AS m_id,
+        m.name AS m_name,
+        m.icon AS m_icon,
+        m.creatorId AS m_creatorId,
+        m.create_date AS m_createDate,
+        m.update_date AS m_updateDate,
+        m.delete_date AS m_deleteDate
+        FROM role_permission rp
+        LEFT JOIN permission p on p.id = rp.permission
+        LEFT JOIN module m on p.moduleId = m.id
+        WHERE rp.role = ${roleId}
+    </select>
+
+    <select id="getPermissionList" resultMap="permission">
+        SELECT
+        p.id as id,
+        p.name as name,
+        p.type as type,
+        p.route as route,
+        p.moduleId as moduleId,
+        p.operating as operating,
+        p.create_date as createDate,
+        p.update_date as updateDate,
+        p.delete_date as deleteDate,
+        m.id AS m_id,
+        m.name AS m_name,
+        m.icon AS m_icon,
+        m.creatorId AS m_creatorId,
+        m.create_date AS m_createDate,
+        m.update_date AS m_updateDate,
+        m.delete_date AS m_deleteDate
+        FROM user_permission up
+        LEFT JOIN permission p on p.id = up.permission
+        LEFT JOIN module m on p.moduleId = m.id
+        WHERE up.user = ${userId}
+    </select>
+
+    <select id="findByPage" resultMap="detailWithPage">
+        <include refid="select"/>
+        ,
+        u2.id AS creator_id,
+        u2.name AS creator_name,
+        u2.mobile AS creator_mobile,
+        u2.email AS creator_email,
+        u2.create_date AS creator_createDate,
+        u2.update_date AS creator_updateDate,
+        u2.delete_date AS creator_deleteDate,
+        u2.roleId AS creator_roleId,
+        u2.creatorId AS creator_creatorId,
+        r.id AS role_id,
+        r.name AS role_name,
+        r.creatorId AS role_creatorId,
+        r.create_date AS role_createDate,
+        r.update_date AS role_updateDate,
+        r.delete_date AS role_deleteDate
+        FROM user u
+        LEFT JOIN user u2 ON u.creatorId = u2.id
+        LEFT JOIN role r ON u.roleId = r.id
+        WHERE 1=1
+        <if test="keyword != null">
+            AND u.name like "%${keyword}%"
+        </if>
+        <if test="isNull != null and isNull == 'isNull'">
+            AND u.delete_date IS NULL
+        </if>
+        <if test="isNull != null and isNull == 'isNotNull'">
+            AND u.delete_date IS NOT NULL
+        </if>
+        ORDER BY u.id ASC
+    </select>
+
+    <select id="findById" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u2.id AS creator_id,
+        u2.name AS creator_name,
+        u2.mobile AS creator_mobile,
+        u2.email AS creator_email,
+        u2.create_date AS creator_createDate,
+        u2.update_date AS creator_updateDate,
+        u2.delete_date AS creator_deleteDate,
+        u2.roleId AS creator_roleId,
+        u2.creatorId AS creator_creatorId,
+        r.id AS role_id,
+        r.name AS role_name,
+        r.creatorId AS role_creatorId,
+        r.create_date AS role_createDate,
+        r.update_date AS role_updateDate,
+        r.delete_date AS role_deleteDate,
+        rpp.id as role_permission_id,
+        rpp.name as role_permission_name,
+        rpp.type as role_permission_type,
+        rpp.route as role_permission_route,
+        rpp.moduleId as role_permission_moduleId,
+        rpp.operating as role_permission_operating,
+        rpp.create_date as role_permission_createDate,
+        rpp.update_date as role_permission_updateDate,
+        rpp.delete_date as role_permission_deleteDate,
+        m.id AS m_id,
+        m.name AS m_name,
+        m.icon AS m_icon,
+        m.creatorId AS m_creatorId,
+        m.create_date AS m_createDate,
+        m.update_date AS m_updateDate,
+        m.delete_date AS m_deleteDate,
+        p.id as permission_id,
+        p.name as permission_name,
+        p.type as permission_type,
+        p.moduleId as permission_moduleId,
+        p.route as permission_route,
+        p.operating as permission_operating,
+        p.create_date as permission_createDate,
+        p.update_date as permission_updateDate,
+        p.delete_date as permission_deleteDate,
+        m2.id AS m2_id,
+        m2.name AS m2_name,
+        m2.icon AS m2_icon,
+        m2.creatorId AS m2_creatorId,
+        m2.create_date AS m2_createDate,
+        m2.update_date AS m2_updateDate,
+        m2.delete_date AS m2_deleteDate
+        FROM user u
+        LEFT JOIN user u2 ON u.creatorId = u2.id
+        LEFT JOIN role r ON u.roleId = r.id
+        LEFT JOIN role_permission rp on r.id = rp.role
+        LEFT JOIN permission rpp on rpp.id = rp.permission
+        LEFT JOIN module m on m.id = rpp.moduleId
+        LEFT JOIN user_permission up on u.id = up.user
+        LEFT JOIN permission p on p.id = up.permission
+        LEFT JOIN module m2 on m2.id = p.moduleId
+        WHERE u.id = ${id}
+        ORDER BY u.id ASC
+    </select>
+
+    <select id="findOneByWhere" resultMap="detail">
+        <include refid="select"/>
+        ,
+        u2.id AS creator_id,
+        u2.name AS creator_name,
+        u2.mobile AS creator_mobile,
+        u2.email AS creator_email,
+        u2.create_date AS creator_createDate,
+        u2.update_date AS creator_updateDate,
+        u2.delete_date AS creator_deleteDate,
+        u2.roleId AS creator_roleId,
+        u2.creatorId AS creator_creatorId,
+        r.id AS role_id,
+        r.name AS role_name,
+        r.creatorId AS role_creatorId,
+        r.create_date AS role_createDate,
+        r.update_date AS role_updateDate,
+        r.delete_date AS role_deleteDate,
+        rpp.id as role_permission_id,
+        rpp.name as role_permission_name,
+        rpp.type as role_permission_type,
+        rpp.moduleId as role_permission_moduleId,
+        rpp.route as role_permission_route,
+        rpp.operating as role_permission_operating,
+        rpp.create_date as role_permission_createDate,
+        rpp.update_date as role_permission_updateDate,
+        rpp.delete_date as role_permission_deleteDate,
+        m.id AS m_id,
+        m.name AS m_name,
+        m.icon AS m_icon,
+        m.creatorId AS m_creatorId,
+        m.create_date AS m_createDate,
+        m.update_date AS m_updateDate,
+        m.delete_date AS m_deleteDate,
+        p.id as permission_id,
+        p.name as permission_name,
+        p.type as permission_type,
+        p.route as permission_route,
+        p.moduleId as permission_moduleId,
+        p.operating as permission_operating,
+        p.create_date as permission_createDate,
+        p.update_date as permission_updateDate,
+        p.delete_date as permission_deleteDate,
+        m2.id AS m2_id,
+        m2.name AS m2_name,
+        m2.icon AS m2_icon,
+        m2.creatorId AS m2_creatorId,
+        m2.create_date AS m2_createDate,
+        m2.update_date AS m2_updateDate,
+        m2.delete_date AS m2_deleteDate
+        FROM user u
+        LEFT JOIN user u2 ON u.creatorId = u2.id
+        LEFT JOIN role r ON u.roleId = r.id
+        LEFT JOIN role_permission rp on r.id = rp.role
+        LEFT JOIN permission rpp on rpp.id = rp.permission
+        LEFT JOIN module m on m.id = rpp.moduleId
+        LEFT JOIN user_permission up on u.id = up.user
+        LEFT JOIN permission p on p.id = up.permission
+        LEFT JOIN module m2 on m2.id = p.moduleId
+        WHERE 1=1
+        <if test="where.id != null">
+            AND u.id = ${where.id}
+        </if>
+        <if test="where.mobile != null">
+            AND u.mobile = "${where.mobile}"
+        </if>
+        <if test="where.email != null">
+            AND u.email = "${where.email}"
+        </if>
+        ORDER BY u.id ASC
+    </select>
+
+    <sql id="select">
+        SELECT
+        u.id AS id,
+        u.name AS name,
+        u.mobile AS mobile,
+        u.email AS email,
+        u.roleId AS roleId,
+        u.creatorId AS creatorId,
+        u.salt AS salt,
+        u.password AS password,
+        u.create_date AS createDate,
+        u.update_date AS updateDate,
+        u.delete_date AS deleteDate
+    </sql>
+</mapper>
