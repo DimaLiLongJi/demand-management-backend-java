@@ -478,12 +478,15 @@
         </if>
         <if test="timeout != null and timeout == 1">
             AND TO_DAYS(d.schedule_end_date) &gt; TO_DAYS(NOW())
+            AND d.finish_date IS NULL
         </if>
         <if test="timeout != null and timeout == 2">
             AND TO_DAYS(d.schedule_end_date) = TO_DAYS(NOW())
+            AND d.finish_date IS NULL
         </if>
         <if test="timeout != null and timeout == 3">
             AND TO_DAYS(d.schedule_end_date) &lt; TO_DAYS(NOW())
+            AND d.finish_date IS NULL
         </if>
         <if test="timeout != null and timeout == 4">
             AND d.finish_date IS NOT NULL

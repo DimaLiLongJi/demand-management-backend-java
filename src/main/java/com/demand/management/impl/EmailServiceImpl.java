@@ -19,13 +19,14 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendEmail(String toUserEmail, String fromUserName, String demandId) {
-        String contentUrl = baseContentUrl + demandId;
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setSubject("小伙子，你被安排了");
-        message.setFrom("cm_hl_email@163.com");
-        message.setTo(toUserEmail);
-        message.setSentDate(new Date());
-        message.setText("<p>" + fromUserName + "给你安排了一个需求，请打开<a href=\"" + contentUrl +"\">" + "</a></p>");
-        javaMailSender.send(message);
+//        TODO 暂时注释掉
+//        String contentUrl = baseContentUrl + demandId;
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setSubject("小伙子，你被安排了");
+//        message.setFrom("cm_hl_email@163.com");
+//        message.setTo(toUserEmail);
+//        message.setSentDate(new Date());
+//        message.setText("<p>" + fromUserName + "给你安排了一个需求，请打开<a href=\"" + contentUrl +"\">" + "</a></p>");
+//        javaMailSender.send(message);
     }
 }
