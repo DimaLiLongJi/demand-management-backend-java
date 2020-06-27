@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demand.management.dao.mapper.DemandTypeStatusIndexMapper">
+    <resultMap id="detail" type="com.demand.management.dto.demand.RelationDemandTypeStatusIndex">
+        <id column="id" property="id"/>
+        <result column="statusIndex" property="statusIndex"/>
+        <result column="demandTypeId" property="demandTypeId"/>
+        <result column="demandStatusId" property="demandStatusId"/>
+        <association property="demandType" javaType="com.demand.management.entity.DemandType">
+            <id column="demand_type_id" property="id"/>
+            <result column="demand_type_name" property="name"/>
+            <result column="demand_type_createDate" property="createDate"/>
+            <result column="demand_type_updateDate" property="updateDate"/>
+            <result column="demand_type_deleteDate" property="deleteDate"/>
+            <result column="demand_type_creatorId" property="creatorId"/>
+        </association>
+        <association property="demandStatus" javaType="com.demand.management.entity.DemandStatus">
+            <id column="demand_status_id" property="id"  />
+            <result column="demand_status_name"  property="name"/>
+            <result column="demand_status_creatorId"  property="creatorId"/>
+            <result column="demand_status_isEndStatus"  property="isEndStatus"/>
+            <result column="demand_status_createDate"  property="createDate"/>
+            <result column="demand_status_updateDate"  property="updateDate"/>
+            <result column="demand_status_deleteDate"  property="deleteDate"/>
+        </association>
+    </resultMap>
+
+    <select id="findByDemandTypeId" resultMap="detail">
+        <include refid="select"/>
+        ,
+        dt.id AS demand_type_id,
+        dt.name AS demand_type_name,
+        dt.creatorId AS demand_type_creatorId,
+        dt.create_date AS demand_type_createDate,
+        dt.update_date AS demand_type_updateDate,
+        dt.delete_date AS demand_type_deleteDate,
+        ds.id AS demand_status_id,
+        ds.name AS demand_status_name,
+        ds.isEndStatus AS demand_status_isEndStatus,
+        ds.creatorId AS demand_status_creatorId,
+        ds.create_date AS demand_status_createDate,
+        ds.update_date AS demand_status_updateDate,
+        ds.delete_date AS demand_status_deleteDate
+        FROM demand_type_stataus_index dtsi
+        <include refid="joinSql"/>
+        WHERE dtsi.demandTypeId = ${demandTypeId}
+        ORDER BY dtsi.statusIndex ASC
+    </select>
+
+    <sql id="select">
+        SELECT
+        dtsi.id AS id,
+        dtsi.statusIndex AS statusIndex,
+        dtsi.demandTypeId AS demandTypeId,
+        dtsi.demandStatusId AS demandStatusId
+    </sql>
+
+    <sql id="joinSql">
+        LEFT JOIN demand_type dt ON dtsi.demandTypeId = dt.id
+        LEFT JOIN demand_status ds ON dtsi.demandStatusId = ds.id
+    </sql>
+</mapper>
