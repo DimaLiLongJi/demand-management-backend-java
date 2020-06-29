@@ -9,6 +9,7 @@ import com.demand.management.dto.user.RelationUser;
 import com.demand.management.entity.User;
 import com.demand.management.service.ExcelService;
 import com.demand.management.service.UserService;
+import com.demand.management.utils.ManagementResponseUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,18 +35,18 @@ public class UserController {
     @GetMapping("/all")
     public DataResponse<List<RelationUser>> getAll() {
         Page<RelationUser> userList = this.service.findAll(null, null, null, null);
-        return new DataResponse<List<RelationUser>>("获取全部用户成功", true, userList.getRecords());
+        return ManagementResponseUtil.<List<RelationUser>>buildDataResponse("获取全部用户成功", true, userList.getRecords());
     }
 
     @GetMapping("/find")
-    public PageDataResponse find(
+    public PageDataResponse<RelationUser> find(
             @RequestParam(required = false) String pageIndex,
             @RequestParam(required = false) String pageSize,
             @RequestParam(required = false) String isOn,
             @RequestParam(required = false) String keyword
     ) {
         Page<RelationUser> userList = this.service.findAll(pageIndex, pageSize, isOn, keyword);
-        return new PageDataResponse("获取用户列表成功", true, userList.getRecords(), userList.getTotal());
+        return ManagementResponseUtil.<RelationUser>buildPageDataResponse("获取用户列表成功", true, userList.getRecords(), userList.getTotal());
     }
 
     @GetMapping("/download")
@@ -76,8 +77,8 @@ public class UserController {
     @GetMapping("/{id}")
     public DataResponse<RelationUser> getById(@PathVariable String id) {
         RelationUser user = this.service.findById(id);
-        if (user != null) return new DataResponse<RelationUser>("获取id为" +id + "的用户成功", true, user);
-        else return new DataResponse<RelationUser>("id为" +id + "的用户不存在", false);
+        if (user != null) return ManagementResponseUtil.<RelationUser>buildDataResponse("获取id为" +id + "的用户成功", true, user);
+        else return ManagementResponseUtil.<RelationUser>buildDataResponse("id为" +id + "的用户不存在", false);
     }
 
     @Transactional
@@ -85,24 +86,24 @@ public class UserController {
     public DataResponse<RelationUser> create(@RequestBody UserBodyReq userBody, HttpServletRequest request) {
         userBody.setCreator(request.getAttribute("authId").toString());
         RelationUser user = this.service.create(userBody);
-        if (user != null) return new DataResponse<RelationUser>("创建用户成功", true, user);
-        else return new DataResponse<RelationUser>("创建用户失败", false);
+        if (user != null) return ManagementResponseUtil.<RelationUser>buildDataResponse("创建用户成功", true, user);
+        else return ManagementResponseUtil.<RelationUser>buildDataResponse("创建用户失败", false);
     }
 
     @Transactional
     @PutMapping("/{id}/password")
     public BaseResponse updatePassword(@PathVariable String id, @RequestBody() UserBodyReq userBody) {
         boolean hasUpdatePassword = this.service.updatePassword(id, userBody.getPassword());
-        if (hasUpdatePassword) return new BaseResponse("id 为 " + id + "的用户更新密码成功", true);
-        return new BaseResponse("id 为 " + id + "的用户更新密码失败", false);
+        if (hasUpdatePassword) return ManagementResponseUtil.buildDataResponse("id 为 " + id + "的用户更新密码成功", true);
+        return ManagementResponseUtil.buildDataResponse("id 为 " + id + "的用户更新密码失败", false);
     }
 
     @Transactional
     @PutMapping("/{id}")
     public DataResponse<RelationUser> update(@PathVariable String id, @RequestBody UserBodyReq userBody) {
-        if (!this.service.updateById(id, userBody)) return new DataResponse<RelationUser>("更新id为" +id + "的用户失败", false);
+        if (!this.service.updateById(id, userBody)) return ManagementResponseUtil.<RelationUser>buildDataResponse("更新id为" +id + "的用户失败", false);
         RelationUser user = this.service.findById(id);
-        if (user != null) return new DataResponse<RelationUser>("更新id为" +id + "的用户成功", true, user);
-        else return new DataResponse<RelationUser>("id为" +id + "的用户不存在", false);
+        if (user != null) return ManagementResponseUtil.<RelationUser>buildDataResponse("更新id为" +id + "的用户成功", true, user);
+        else return ManagementResponseUtil.<RelationUser>buildDataResponse("id为" +id + "的用户不存在", false);
     }
 }

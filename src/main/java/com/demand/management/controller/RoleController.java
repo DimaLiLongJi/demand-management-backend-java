@@ -7,6 +7,7 @@ import com.demand.management.dto.response.PageDataResponse;
 import com.demand.management.dto.role.RelationRole;
 import com.demand.management.dto.role.RoleBodyReq;
 import com.demand.management.service.RoleService;
+import com.demand.management.utils.ManagementResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -20,20 +21,20 @@ public class RoleController {
     private RoleService service;
 
     @GetMapping("/find")
-    public PageDataResponse find(
+    public PageDataResponse<RelationRole> find(
             @RequestParam(required = false) String pageIndex,
             @RequestParam(required = false) String pageSize,
             @RequestParam(required = false) String isOn
     ) {
         Page<RelationRole> list = this.service.findAll(pageIndex, pageSize, isOn);
-        return new PageDataResponse("获取角色列表成功", true, list.getRecords(), list.getTotal());
+        return ManagementResponseUtil.<RelationRole>buildPageDataResponse("获取角色列表成功", true, list.getRecords(), list.getTotal());
     }
 
     @GetMapping("/{id}")
     public DataResponse<RelationRole> getById(@PathVariable String id) {
         RelationRole role = this.service.findById(id);
-        if (role != null) return new DataResponse<RelationRole>("获取id为" +id + "的角色成功", true, role);
-        else return new DataResponse<RelationRole>("id为" +id + "的角色不存在", false);
+        if (role != null) return ManagementResponseUtil.<RelationRole>buildDataResponse("获取id为" +id + "的角色成功", true, role);
+        else return ManagementResponseUtil.buildDataResponse("id为" +id + "的角色不存在", false);
     }
 
     @Transactional

@@ -48,6 +48,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         update.eq("id", id);
         update.set("id", id);
         update.set("password", password);
+        update.set("salt", salt);
 
         return this.update(update);
     }

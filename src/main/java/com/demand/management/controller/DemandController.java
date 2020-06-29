@@ -12,6 +12,7 @@ import com.demand.management.entity.File;
 import com.demand.management.service.DemandService;
 import com.demand.management.service.ExcelService;
 import com.demand.management.utils.CommonUtil;
+import com.demand.management.utils.ManagementResponseUtil;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,22 +42,22 @@ public class DemandController {
             @RequestParam(name = "demandId", required = false) String demandId,
             HttpServletRequest request
     ) {
-        if (file.isEmpty()) return new DataResponse<File>("上传失败", false);
+        if (file.isEmpty()) return ManagementResponseUtil.<File>buildDataResponse("上传失败", false);
         File saveFile = this.service.addFile(file, request.getAttribute("authId").toString(), demandId);
-        if (saveFile != null) return new DataResponse<File>("创建需求附件成功", true, saveFile);
-        else return new DataResponse<File>("创建需求附件失败", false);
+        if (saveFile != null) return ManagementResponseUtil.<File>buildDataResponse("创建需求附件成功", true, saveFile);
+        else return ManagementResponseUtil.<File>buildDataResponse("创建需求附件失败", false);
     }
 
     @PostMapping("")
     public DataResponse<RelationDemand> create(@RequestBody DemandBodyReq body, HttpServletRequest request) {
         body.setCreator(request.getAttribute("authId").toString());
         RelationDemand module = this.service.create(body);
-        if (module != null) return new DataResponse<RelationDemand>("创建需求成功", true, module);
-        else return new DataResponse<RelationDemand>("创建需求失败", false);
+        if (module != null) return ManagementResponseUtil.<RelationDemand>buildDataResponse("创建需求成功", true, module);
+        else return ManagementResponseUtil.<RelationDemand>buildDataResponse("创建需求失败", false);
     }
 
     @GetMapping("/find")
-    public PageDataResponse find(
+    public PageDataResponse<RelationDemand> find(
             @RequestParam(required = false) String pageIndex,
             @RequestParam(required = false) String pageSize,
             @RequestParam(required = false) String keyword,
@@ -103,11 +104,11 @@ public class DemandController {
                 CommonUtil.buildDateParams(scheduleEndFromDate),
                 CommonUtil.buildDateParams(scheduleEndToDate)
         );
-        return new PageDataResponse("获取需求列表成功", true, list.getRecords(), list.getTotal());
+        return ManagementResponseUtil.<RelationDemand>buildPageDataResponse("获取需求列表成功", true, list.getRecords(), list.getTotal());
     }
 
     @GetMapping("/find-self")
-    public PageDataResponse findSelf(
+    public PageDataResponse<RelationDemand> findSelf(
             @RequestParam(required = false) String type,
             @RequestParam(required = false) String pageIndex,
             @RequestParam(required = false) String pageSize,
@@ -147,7 +148,7 @@ public class DemandController {
                 CommonUtil.buildDateParams(scheduleEndFromDate),
                 CommonUtil.buildDateParams(scheduleEndToDate)
         );
-        return new PageDataResponse("获取需求列表成功", true, list.getRecords(), list.getTotal());
+        return ManagementResponseUtil.<RelationDemand>buildPageDataResponse("获取需求列表成功", true, list.getRecords(), list.getTotal());
     }
 
     @GetMapping("/download")
@@ -220,8 +221,8 @@ public class DemandController {
     @GetMapping("/{id}")
     public DataResponse<RelationDemand> getById(@PathVariable String id) {
         RelationDemand find = this.service.findById(id);
-        if (find != null) return new DataResponse<RelationDemand>("获取id为" +id + "的需求成功", true, find);
-        else return new DataResponse<RelationDemand>("id为" +id + "的需求不存在", false);
+        if (find != null) return ManagementResponseUtil.<RelationDemand>buildDataResponse("获取id为" +id + "的需求成功", true, find);
+        else return ManagementResponseUtil.<RelationDemand>buildDataResponse("id为" +id + "的需求不存在", false);
     }
 
     @PutMapping("/pass/{id}")
@@ -232,15 +233,15 @@ public class DemandController {
         DemandBodyReq body = new DemandBodyReq();
         body.setCreator(request.getAttribute("authId").toString());
         body.setIsPending(DemandPendingEnum.notPending.getType());
-        if (this.service.updateById(id, body)) return new BaseResponse("更新需求成功", true);
-        else return new BaseResponse("更新需求失败", false);
+        if (this.service.updateById(id, body)) return ManagementResponseUtil.buildBaseResponse("更新需求成功", true);
+        else return ManagementResponseUtil.buildBaseResponse("更新需求失败", false);
     }
 
     @PutMapping("/deleteFile")
     public BaseResponse deleteFile(@RequestBody DemandFilesBodyReq body, HttpServletRequest request) {
         body.setCreator(request.getAttribute("authId").toString());
-        if (this.service.deleteFile(body)) return new BaseResponse("删除需求附件成功", true);
-        else return new BaseResponse("删除需求附件失败", false);
+        if (this.service.deleteFile(body)) return ManagementResponseUtil.buildBaseResponse("删除需求附件成功", true);
+        else return ManagementResponseUtil.buildBaseResponse("删除需求附件失败", false);
     }
 
     @PutMapping("/{id}")
@@ -250,7 +251,7 @@ public class DemandController {
             HttpServletRequest request
     ) {
         body.setCreator(request.getAttribute("authId").toString());
-        if (this.service.updateById(id, body)) return new BaseResponse("更新需求成功", true);
-        else return new BaseResponse("id 为 " + id + " 的需求无法审核，原因：id为 " + request.getAttribute("authId").toString() + " 的用户无审核权限！", false);
+        if (this.service.updateById(id, body)) return ManagementResponseUtil.buildBaseResponse("更新需求成功", true);
+        else return ManagementResponseUtil.buildBaseResponse("id 为 " + id + " 的需求无法审核，原因：id为 " + request.getAttribute("authId").toString() + " 的用户无审核权限！", false);
     }
 }

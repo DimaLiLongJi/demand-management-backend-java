@@ -6,6 +6,7 @@ import com.demand.management.dto.demand.RelationDemandLog;
 import com.demand.management.dto.response.DataResponse;
 import com.demand.management.dto.response.PageDataResponse;
 import com.demand.management.service.DemandLogService;
+import com.demand.management.utils.ManagementResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +22,18 @@ public class DemandLogController {
     public DataResponse<RelationDemandLog> create(@RequestBody DemandLogBodyReq body, HttpServletRequest request) {
         body.setCreator(request.getAttribute("authId").toString());
         RelationDemandLog module = this.service.create(body);
-        if (module != null) return new DataResponse<RelationDemandLog>("创建需求日志成功", true, module);
-        else return new DataResponse<RelationDemandLog>("创建需求日志失败", false);
+        if (module != null) return ManagementResponseUtil.<RelationDemandLog>buildDataResponse("创建需求日志成功", true, module);
+        else return ManagementResponseUtil.<RelationDemandLog>buildDataResponse("创建需求日志失败", false);
     }
 
     @GetMapping("/find")
-    public PageDataResponse findAll(
+    public PageDataResponse<RelationDemandLog> findAll(
             @RequestParam(required = false) String pageIndex,
             @RequestParam(required = false) String pageSize,
             @RequestParam(required = false) String demand,
             @RequestParam(required = false) String creator
     ) {
         Page<RelationDemandLog> list = this.service.findAll(pageIndex, pageSize, demand, creator);
-        return new PageDataResponse("获取需求日志列表成功", true, list.getRecords(), list.getTotal());
+        return ManagementResponseUtil.<RelationDemandLog>buildPageDataResponse("获取需求日志列表成功", true, list.getRecords(), list.getTotal());
     }
 }
