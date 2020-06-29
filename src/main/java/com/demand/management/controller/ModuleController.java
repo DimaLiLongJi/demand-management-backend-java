@@ -18,7 +18,7 @@ public class ModuleController {
     @Autowired
     private ModuleService service;
 
-    @PutMapping("")
+    @RequestMapping(value= "", method = { RequestMethod.POST, RequestMethod.PUT } )
     public DataResponse<RelationModule> create(@RequestBody ModuleBodyReq body, HttpServletRequest request) {
         body.setCreator(request.getAttribute("authId").toString());
         RelationModule module = this.service.create(body);

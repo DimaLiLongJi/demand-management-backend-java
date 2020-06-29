@@ -50,7 +50,7 @@ public class PermissionController {
     }
 
     @Transactional
-    @PutMapping("/{id}")
+    @RequestMapping(value= "/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse update(@PathVariable String id, @RequestBody PermissionBodyReq permissionBody) {
         if (!this.service.updateById(id, permissionBody)) return ManagementResponseUtil.buildBaseResponse("更新id为" +id + "的权限失败", false);
         else return ManagementResponseUtil.buildBaseResponse("更新id为" +id + "的权限成功", true);

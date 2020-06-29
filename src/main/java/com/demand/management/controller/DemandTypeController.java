@@ -50,7 +50,7 @@ public class DemandTypeController {
     }
 
     @Transactional
-    @PutMapping("/{id}")
+    @RequestMapping(value= "/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse update(@PathVariable String id, @RequestBody DemandTypeBodyReq body) {
         if (!this.service.updateById(id, body)) return ManagementResponseUtil.buildBaseResponse("更新id为" +id + "的需求类型失败", false);
         RelationDemandType role = this.service.findById(id);

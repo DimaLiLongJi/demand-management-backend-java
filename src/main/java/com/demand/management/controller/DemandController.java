@@ -225,7 +225,7 @@ public class DemandController {
         else return ManagementResponseUtil.<RelationDemand>buildDataResponse("id为" +id + "的需求不存在", false);
     }
 
-    @PutMapping("/pass/{id}")
+    @RequestMapping(value= "/pass/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse pass(
             @PathVariable String id,
             HttpServletRequest request
@@ -236,15 +236,15 @@ public class DemandController {
         if (this.service.updateById(id, body)) return ManagementResponseUtil.buildBaseResponse("更新需求成功", true);
         else return ManagementResponseUtil.buildBaseResponse("更新需求失败", false);
     }
-
-    @PutMapping("/deleteFile")
+    
+    @RequestMapping(value= "/deleteFile", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse deleteFile(@RequestBody DemandFilesBodyReq body, HttpServletRequest request) {
         body.setCreator(request.getAttribute("authId").toString());
         if (this.service.deleteFile(body)) return ManagementResponseUtil.buildBaseResponse("删除需求附件成功", true);
         else return ManagementResponseUtil.buildBaseResponse("删除需求附件失败", false);
     }
 
-    @PutMapping("/{id}")
+    @RequestMapping(value= "/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse update(
             @PathVariable String id,
             @RequestBody DemandBodyReq body,

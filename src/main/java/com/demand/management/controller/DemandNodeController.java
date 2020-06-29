@@ -45,7 +45,7 @@ public class DemandNodeController {
         else return ManagementResponseUtil.<RelationDemandNode>buildDataResponse("id为" +id + "的需求节点不存在", false);
     }
 
-    @PutMapping("/{id}")
+    @RequestMapping(value= "/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse update(
             @PathVariable String id,
             @RequestBody DemandNodeBodyReq body,

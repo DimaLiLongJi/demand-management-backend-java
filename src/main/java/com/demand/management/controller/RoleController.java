@@ -47,7 +47,7 @@ public class RoleController {
     }
 
     @Transactional
-    @PutMapping("/{id}")
+    @RequestMapping(value= "/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse update(@PathVariable String id, @RequestBody RoleBodyReq body) {
         if (!this.service.updateById(id, body)) return new BaseResponse("更新id为" +id + "的角色失败", false);
         RelationRole role = this.service.findById(id);

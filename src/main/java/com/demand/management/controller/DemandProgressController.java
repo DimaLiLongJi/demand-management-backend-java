@@ -45,7 +45,7 @@ public class DemandProgressController {
         else return ManagementResponseUtil.<RelationDemandProgress>buildDataResponse("id为" +id + "的需求进度不存在", false);
     }
 
-    @PutMapping("/{id}")
+    @RequestMapping(value= "/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse updateById(
             @PathVariable String id,
             @RequestBody DemandProgressBodyReq body,

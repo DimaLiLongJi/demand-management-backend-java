@@ -49,7 +49,7 @@ public class DemandStatusController {
     }
 
     @Transactional
-    @PutMapping("/{id}")
+    @RequestMapping(value= "/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse update(@PathVariable String id, @RequestBody DemandStatusBodyReq body) {
         if (!this.service.updateById(id, body)) return new BaseResponse("更新id为" +id + "的需求状态失败", false);
         RelationDemandStatus role = this.service.findById(id);

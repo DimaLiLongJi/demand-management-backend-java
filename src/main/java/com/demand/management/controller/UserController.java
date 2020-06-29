@@ -91,7 +91,7 @@ public class UserController {
     }
 
     @Transactional
-    @PutMapping("/{id}/password")
+    @RequestMapping(value= "/{id}/password", method = { RequestMethod.POST, RequestMethod.PUT } )
     public BaseResponse updatePassword(@PathVariable String id, @RequestBody() UserBodyReq userBody) {
         boolean hasUpdatePassword = this.service.updatePassword(id, userBody.getPassword());
         if (hasUpdatePassword) return ManagementResponseUtil.buildDataResponse("id 为 " + id + "的用户更新密码成功", true);
@@ -99,7 +99,7 @@ public class UserController {
     }
 
     @Transactional
-    @PutMapping("/{id}")
+    @RequestMapping(value= "/{id}", method = { RequestMethod.POST, RequestMethod.PUT } )
     public DataResponse<RelationUser> update(@PathVariable String id, @RequestBody UserBodyReq userBody) {
         if (!this.service.updateById(id, userBody)) return ManagementResponseUtil.<RelationUser>buildDataResponse("更新id为" +id + "的用户失败", false);
         RelationUser user = this.service.findById(id);
