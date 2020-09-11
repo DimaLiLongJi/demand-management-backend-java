@@ -20,7 +20,7 @@ spring:
             required: true
         debug: true
   datasource:
-    url: jdbc:mysql://localhost:3306/demand?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:20001/demand?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: mossdbuser
     password: yP@6M5s^#U
