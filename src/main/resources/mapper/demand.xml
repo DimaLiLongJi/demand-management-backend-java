@@ -492,7 +492,7 @@
             AND d.finish_date IS NOT NULL
         </if>
         <if test="demandCreateFromDate != null">
-            AND TO_DAYS(d.create_date) &gt;= TO_DAYS(TIME("${}"))TO_DAYS(DATE_FORMAT(#{demandCreateFromDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
+            AND TO_DAYS(d.create_date) &gt;= TO_DAYS(DATE_FORMAT(#{demandCreateFromDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         <if test="demandCreateToDate != null">
             AND TO_DAYS(d.create_date) &lt;= TO_DAYS(DATE_FORMAT(#{demandCreateToDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
