@@ -15,7 +15,10 @@ public class CommonUtil {
 
     public static Date buildDateParams(String time) throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-        if (time != null) return format.parse(time);
+        if (time != null) {
+            System.out.println("888888 =>" + format.parse(time).toString());
+            return format.parse(time);
+        }
         else return null;
     }
 

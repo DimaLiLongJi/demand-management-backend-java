@@ -492,28 +492,28 @@
             AND d.finish_date IS NOT NULL
         </if>
         <if test="demandCreateFromDate != null">
-            AND TO_DAYS(d.create_date) &gt;= TO_DAYS(TIME("${demandCreateFromDate}"))
+            AND TO_DAYS(d.create_date) &gt;= TO_DAYS(TIME("${}"))TO_DAYS(DATE_FORMAT(#{demandCreateFromDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         <if test="demandCreateToDate != null">
-            AND TO_DAYS(d.create_date) &lt;= TO_DAYS(TIME("${demandCreateToDate}"))
+            AND TO_DAYS(d.create_date) &lt;= TO_DAYS(DATE_FORMAT(#{demandCreateToDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         <if test="demandEndFromDate != null">
-            AND TO_DAYS(d.finish_date) &gt;= TO_DAYS(TIME("${demandEndFromDate}"))
+            AND TO_DAYS(d.finish_date) &gt;= TO_DAYS(DATE_FORMAT(#{demandEndFromDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         <if test="demandEndToDate != null">
-            AND TO_DAYS(d.finish_date) &lt;= TO_DAYS(TIME("${demandEndToDate}"))
+            AND TO_DAYS(d.finish_date) &lt;= TO_DAYS(DATE_FORMAT(#{demandEndToDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         <if test="scheduleStartFromDate != null">
-            AND TO_DAYS(d.schedule_start_date) &gt;= TO_DAYS(TIME("${scheduleStartFromDate}"))
+            AND TO_DAYS(d.schedule_start_date) &gt;= TO_DAYS(DATE_FORMAT(#{scheduleStartFromDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         <if test="scheduleStartToDate != null">
-            AND TO_DAYS(d.schedule_start_date) &lt;= TO_DAYS(TIME("${scheduleStartToDate}"))
+            AND TO_DAYS(d.schedule_start_date) &lt;= TO_DAYS(DATE_FORMAT(#{scheduleStartToDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         <if test="scheduleEndFromDate != null">
-            AND TO_DAYS(d.schedule_end_date) &gt;= TO_DAYS(TIME("${scheduleEndFromDate}"))
+            AND TO_DAYS(d.schedule_end_date) &gt;= TO_DAYS(DATE_FORMAT(#{scheduleEndFromDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         <if test="scheduleEndToDate != null">
-            AND TO_DAYS(d.schedule_end_date) &lt;= TO_DAYS(TIME("${scheduleEndToDate}"))
+            AND TO_DAYS(d.schedule_end_date) &lt;= TO_DAYS(DATE_FORMAT(#{scheduleEndToDate, jdbcType=TIMESTAMP},'%Y-%m-%d %H:%i:%S'))
         </if>
         ORDER BY d.id ASC
     </select>

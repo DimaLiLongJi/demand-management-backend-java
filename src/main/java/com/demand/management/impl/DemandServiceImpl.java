@@ -134,6 +134,9 @@ public class DemandServiceImpl extends ServiceImpl<DemandMapper, Demand> impleme
     ) {
         ExtendPage<RelationDemand> page = new ExtendPage<RelationDemand>(pageIndex, pageSize);
         String isNull = CommonUtil.buildWithIsOn(isOn);
+        System.out.println("wwww => 1" + scheduleEndFromDate);
+        System.out.println("wwww => 2" + scheduleEndToDate);
+
         List<RelationDemand> records = this.baseMapper.findByPage(
                 page.getPageForFind(),
                 isNull,
